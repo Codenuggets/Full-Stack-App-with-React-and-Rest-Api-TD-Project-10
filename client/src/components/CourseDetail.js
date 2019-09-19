@@ -12,6 +12,7 @@ export default class CourseDetail extends Component {
     const { context } = this.props;
     const course = await context.actions.loadCourse(this.props.match.params.id);
     this.setState({
+      id: course.id,
       title: course.title,
       description: course.description,
       estimatedTime: course.estimatedTime,
@@ -46,7 +47,7 @@ export default class CourseDetail extends Component {
         <div className="bounds">
           <div className="grid-100">
             <span>
-              <a className="button" href="#">Update Course</a>
+              <a className="button" href={'/courses/' + this.state.id + '/update'}>Update Course</a>
               <a className="button" href="#">Delete Course</a>
             </span>
             <a className="button button-secondary" href="/">
