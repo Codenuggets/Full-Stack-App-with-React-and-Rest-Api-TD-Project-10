@@ -61,4 +61,26 @@ export default class Data {
       throw new Error();
     }
   }
+
+  async getCourse(id) {
+    const course = await this.api(`/courses/${id}`);
+    if(course.status === 200) {
+      return course.json().then(data => data);
+    } else if (course.status === 401) {
+      return null;
+    } else {
+      throw new Error();
+    }
+  }
+
+  async getUser(id) {
+    const course = await this.api(`/users/${id}`);
+    if(course.status === 200) {
+      return course.json().then(data => data);
+    } else if (course.status === 401) {
+      return null;
+    } else {
+      throw new Error();
+    }
+  }
 }

@@ -7,7 +7,6 @@ const Context = React.createContext();
 export class Provider extends Component {
   state = {
     authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
-    courses: null
   };
 
   constructor() {
@@ -16,13 +15,14 @@ export class Provider extends Component {
   }
 
   render() {
-    const { authenticatedUser, courses } = this.state;
+    const { authenticatedUser } = this.state;
 
     const value = {
       authenticatedUser,
       data: this.data,
       actions: {
         loadCourses: this.loadCourses,
+        loadCourse: this.loadCourse,
         signIn: this.signIn,
         signOut: this.signOut,
       },
@@ -55,6 +55,11 @@ export class Provider extends Component {
   loadCourses = async() => {
     const courses = await this.data.getCourses();
     return courses;
+  }
+
+  loadCourse = async(id) => {
+    const course = await this.data.getCourse(id);
+    return course;
   }
 }
 
