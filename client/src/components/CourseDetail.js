@@ -18,6 +18,7 @@ export default class CourseDetail extends Component {
       estimatedTime: course.estimatedTime,
       materialsNeeded: course.materialsNeeded,
       user: course.user.firstName + ' ' + course.user.lastName,
+      userId: course.userId,
     });
     if(this.state.materialsNeeded != null) {
       this.setState({
@@ -41,15 +42,23 @@ export default class CourseDetail extends Component {
     return materials;
   }
   render() {
+    const { context } = this.props;
+    let authenticatedUser = null;
+    if(context.authenticatedUser){
+      authenticatedUser = context.authenticatedUser;
+    }
+
     return (
       <div>
       <div className="actions--bar">
         <div className="bounds">
           <div className="grid-100">
-            <span>
-              <a className="button" href={'/courses/' + this.state.id + '/update'}>Update Course</a>
-              <a className="button" href="#">Delete Course</a>
-            </span>
+            {authenticatedUser && authenticatedUser.id === this.state.userId &&
+              <span>
+                <a className="button" href={'/courses/' + this.state.id + '/update'}>Update Course</a>
+                <a className="button" href="#">Delete Course</a>
+              </span>
+            }
             <a className="button button-secondary" href="/">
               Return to List
             </a>
