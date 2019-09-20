@@ -42,6 +42,8 @@ export class Provider extends Component {
           authenticatedUser: user,
         };
       });
+      user.authData = btoa(`${username}:${password}`);
+      localStorage.setItem('user', JSON.stringify(user));
       Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 });
     }
     return user;

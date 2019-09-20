@@ -71,7 +71,8 @@ router.get('/users', authenticateUser, (req, res) => {
   res.json({
     firstName: user.firstName,
     lastName: user.lastName,
-    emailAddress: user.emailAddress
+    emailAddress: user.emailAddress,
+    id: user.id,
   });
 });
 
