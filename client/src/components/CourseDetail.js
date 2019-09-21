@@ -27,6 +27,13 @@ export default class CourseDetail extends Component {
     }
   }
 
+  handleDelete = () => {
+    const { context } = this.props;
+    const credentials = JSON.parse(localStorage.getItem('user'));
+    context.data.deleteCourse(this.state.id, credentials.authData)
+      .then(this.props.history.push('/'));
+  }
+
   seperateMaterials = () => {
     const splitMaterials = this.state.materialsNeeded.split("*");
     let materials = [];
@@ -56,7 +63,7 @@ export default class CourseDetail extends Component {
             {authenticatedUser && authenticatedUser.id === this.state.userId &&
               <span>
                 <a className="button" href={'/courses/' + this.state.id + '/update'}>Update Course</a>
-                <a className="button" href="#">Delete Course</a>
+                <a className="button" href="#" onClick={this.handleDelete}>Delete Course</a>
               </span>
             }
             <a className="button button-secondary" href="/">
