@@ -1,8 +1,10 @@
 import config from './config';
+import { createBrowserHistory } from 'history';
 
 export default class Data {
   api(path, method= 'GET', body= null, requiresAuth = false, credentials = null) {
     const url = config.apiBaseUrl + path;
+    const history = createBrowserHistory();
 
     const options = {
       method,
@@ -77,7 +79,7 @@ export default class Data {
     } else if (courses.status === 401) {
       return null;
     } else {
-      throw new Error();
+      return courses.status;
     }
   }
 

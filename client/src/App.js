@@ -9,7 +9,10 @@ import Header from './components/Header';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
+import Forbidden from './components/Forbidden';
+import NotFound from './components/NotFound';
 import PrivateRoute from './PrivateRoute';
+import UnhandledError from './components/UnhandledError';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
@@ -38,6 +41,10 @@ export default () => (
         <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signup" component={UserSignUpWithContext} />
         <Route path="/signout" component={UserSignOutWithContext} />
+        <Route path ="/forbidden" component={Forbidden} />
+        <Route path ="/notfound" component={NotFound} />
+        <Route path ="/error" component={UnhandledError} />
+        <Route component={NotFound} />
       </Switch>
     </div>
   </BrowserRouter>

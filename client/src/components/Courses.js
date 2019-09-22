@@ -8,6 +8,7 @@ export default class Courses extends Component {
     const { context } = this.props;
     const courses = await context.actions.loadCourses();
     let coursesArray = [];
+    console.log(courses);
     for(let course of courses) {
       coursesArray.push(
         <div key={course.id} className="grid-33">

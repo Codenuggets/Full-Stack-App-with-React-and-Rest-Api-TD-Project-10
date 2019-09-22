@@ -1,29 +1,33 @@
 import React, { Component } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 export default class CourseDetail extends Component {
   state = {
     title: null,
     description: null,
     estimatedTime: null,
-    materialsNeeded: []
+    materialsNeeded: [],
+    user: null,
+    userId: null,
+    course: null,
   }
 
   async componentDidMount() {
     const { context } = this.props;
     const course = await context.actions.loadCourse(this.props.match.params.id);
-    this.setState({
-      id: course.id,
-      title: course.title,
-      description: course.description,
-      estimatedTime: course.estimatedTime,
-      materialsNeeded: course.materialsNeeded,
-      user: course.user.firstName + ' ' + course.user.lastName,
-      userId: course.userId,
-    });
-    if(this.state.materialsNeeded != null) {
+    if(course){
       this.setState({
-        materialsNeeded: this.seperateMaterials()
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        estimatedTime: course.estimatedTime,
+        materialsNeeded: course.materialsNeeded,
+        user: course.user.firstName + ' ' + course.user.lastName,
+        userId: course.userId,
+        course: course,
       });
+    } else {
+      this.props.history.push('/notfound');
     }
   }
 
@@ -34,33 +38,27 @@ export default class CourseDetail extends Component {
       .then(this.props.history.push('/'));
   }
 
-  seperateMaterials = () => {
-    const splitMaterials = this.state.materialsNeeded.split("*");
-    let materials = [];
-    let key = 0;
-    for(let material of splitMaterials) {
-      if(material !== ""){
-        materials.push(
-          <li key={key}>{material}</li>
-        );
-        key += 1;
-      }
-    }
-    return materials;
-  }
   render() {
     const { context } = this.props;
     let authenticatedUser = null;
     if(context.authenticatedUser){
       authenticatedUser = context.authenticatedUser;
     }
+    const {
+      userId,
+      title,
+      description,
+      user,
+      estimatedTime,
+      materialsNeeded
+    } = this.state;
 
     return (
       <div>
       <div className="actions--bar">
         <div className="bounds">
           <div className="grid-100">
-            {authenticatedUser && authenticatedUser.id === this.state.userId &&
+            {authenticatedUser && authenticatedUser.id === userId &&
               <span>
                 <a className="button" href={'/courses/' + this.state.id + '/update'}>Update Course</a>
                 <a className="button" href="#" onClick={this.handleDelete}>Delete Course</a>
@@ -76,11 +74,11 @@ export default class CourseDetail extends Component {
         <div className="grid-66">
           <div className="course--header">
             <h4 className="course--label">Course</h4>
-            <h3 className="course--title">{this.state.title}</h3>
-            <p>By {this.state.user}</p>
+            <h3 className="course--title">{title}</h3>
+            <p>By {user}</p>
           </div>
           <div className="course--description">
-            <p>{this.state.description}</p>
+            <ReactMarkdown source={description} />
           </div>
         </div>
         <div className="grid-25 grid-right">
@@ -88,13 +86,11 @@ export default class CourseDetail extends Component {
             <ul className="course--stats--list">
               <li className="course--stats--list--item">
                 <h4>Estimated Time</h4>
-                <h3>{this.state.estimatedTime}</h3>
+                <h3>{estimatedTime}</h3>
               </li>
               <li className="course--stats--list--item">
                 <h4>Materials Needed</h4>
-                <ul>
-                  {this.state.materialsNeeded}
-                </ul>
+                  <ReactMarkdown source={materialsNeeded} escapeHtml={true} />
               </li>
             </ul>
           </div>

@@ -16,15 +16,22 @@ export default class UpdateCourse extends Component {
   async componentDidMount() {
     const { context } = this.props;
     const course = await context.actions.loadCourse(this.props.match.params.id);
-    this.setState({
-      id: course.id,
-      title: course.title,
-      description: course.description,
-      estimatedTime: course.estimatedTime,
-      materialsNeeded: course.materialsNeeded,
-      user: course.user.firstName + ' ' + course.user.lastName,
-      userId: course.userId,
-    });
+    if(course){
+      this.setState({
+        id: course.id,
+        title: course.title,
+        description: course.description,
+        estimatedTime: course.estimatedTime,
+        materialsNeeded: course.materialsNeeded,
+        user: course.user.firstName + ' ' + course.user.lastName,
+        userId: course.userId,
+      });
+      if(context.authenticatedUser.id !== this.state.userId) {
+        this.props.history.push('/forbidden');
+      }
+    } else {
+      this.props.history.push('/notfound');
+    }
   }
 
   cancel = () => {
