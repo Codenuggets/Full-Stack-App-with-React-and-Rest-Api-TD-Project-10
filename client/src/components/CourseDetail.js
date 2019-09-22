@@ -90,7 +90,7 @@ export default class CourseDetail extends Component {
               </li>
               <li className="course--stats--list--item">
                 <h4>Materials Needed</h4>
-                  <ReactMarkdown source={materialsNeeded} escapeHtml={true} />
+                  <ReactMarkdown source={materialsNeeded.toString()} />
               </li>
             </ul>
           </div>
