@@ -65,7 +65,7 @@ export default class CourseDetail extends Component {
             {authenticatedUser && authenticatedUser.id === userId &&
               <span>
                 <a className="button" href={'/courses/' + this.state.id + '/update'}>Update Course</a>
-                <a className="button" href="#" onClick={this.handleDelete}>Delete Course</a>
+                <button className="button" onClick={this.handleDelete}>Delete Course</button>
               </span>
             }
             <a className="button button-secondary" href="/">

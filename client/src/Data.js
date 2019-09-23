@@ -1,5 +1,4 @@
 import config from './config';
-import { createBrowserHistory } from 'history';
 
 export default class Data {
   // This serves as the base api request constructor
