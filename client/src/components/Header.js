@@ -1,10 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 export default class extends React.PureComponent {
+  state = {
+    location: "hi"
+  }
   render() {
     const { context } = this.props;
     const authenticatedUser = context.authenticatedUser;
+    const history = createBrowserHistory();
     return (
       <div className="header">
         <div className="bounds">
@@ -19,7 +24,7 @@ export default class extends React.PureComponent {
             :
               <React.Fragment>
                 <Link className="signup" to="/signup">Sign Up</Link>
-                <Link className="signin" to="/signin">Sign In</Link>
+                <Link className="signin" to={{ pathname: '/signin', state: {from: history.location}, }}>Sign In</Link>
               </React.Fragment>
           }
           </nav>
