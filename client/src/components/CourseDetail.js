@@ -6,7 +6,7 @@ export default class CourseDetail extends Component {
     title: null,
     description: null,
     estimatedTime: null,
-    materialsNeeded: [],
+    materialsNeeded: '',
     user: null,
     userId: null,
     course: null,
@@ -15,7 +15,7 @@ export default class CourseDetail extends Component {
   async componentDidMount() {
     const { context } = this.props;
     const course = await context.actions.loadCourse(this.props.match.params.id);
-    if(course){
+    if(course !== 500){
       this.setState({
         id: course.id,
         title: course.title,
@@ -26,6 +26,8 @@ export default class CourseDetail extends Component {
         userId: course.userId,
         course: course,
       });
+    } else if(course === 500){
+      this.props.history.push('/error');
     } else {
       this.props.history.push('/notfound');
     }
@@ -35,7 +37,9 @@ export default class CourseDetail extends Component {
     const { context } = this.props;
     const credentials = JSON.parse(localStorage.getItem('user'));
     context.data.deleteCourse(this.state.id, credentials.authData)
-      .then(this.props.history.push('/'));
+      .then(setTimeout(() => {
+        this.props.history.push('/');
+      }, 500));
   }
 
   render() {
@@ -90,7 +94,7 @@ export default class CourseDetail extends Component {
               </li>
               <li className="course--stats--list--item">
                 <h4>Materials Needed</h4>
-                  <ReactMarkdown source={materialsNeeded.toString()} />
+                  <ReactMarkdown source={materialsNeeded} />
               </li>
             </ul>
           </div>

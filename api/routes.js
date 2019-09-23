@@ -205,7 +205,7 @@ router.put('/courses/:id', [
           estimatedTime: req.body.estimatedTime,
           materialsNeeded: req.body.materialsNeeded,
         });
-        res.status(204).end();
+        res.status(500).end();
       } else {
         res.status(403).json({ error: "User has to own course to update them"});
       }

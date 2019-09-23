@@ -8,20 +8,27 @@ export default class Courses extends Component {
     const { context } = this.props;
     const courses = await context.actions.loadCourses();
     let coursesArray = [];
-    console.log(courses);
-    for(let course of courses) {
-      coursesArray.push(
-        <div key={course.id} className="grid-33">
-          <a className="course--module course--link" href={'/courses/' + course.id}>
-            <h4 className="course--label">Course</h4>
-            <h3 className="course--title">{course.title}</h3>
-          </a>
-        </div>
-      );
+    //Checks to make sure a 500 status wasn't returned
+    if(courses !== 500){
+      //loops through courses and pushes html into the courses array to be rendered below
+      for(let course of courses) {
+        coursesArray.push(
+          <div key={course.id} className="grid-33">
+            <a className="course--module course--link" href={'/courses/' + course.id}>
+              <h4 className="course--label">Course</h4>
+              <h3 className="course--title">{course.title}</h3>
+            </a>
+          </div>
+        );
+      }
+      // After loop is complete, this.state.courses is updated to the courses
+      this.setState({
+        courses: coursesArray
+      });
+    } else {
+      // If a 500 server error was returned, the user is redirected to the error page
+      this.props.history.push('/error');
     }
-    this.setState({
-      courses: coursesArray
-    });
   }
   render() {
     return (

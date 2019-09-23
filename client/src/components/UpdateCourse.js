@@ -16,7 +16,8 @@ export default class UpdateCourse extends Component {
   async componentDidMount() {
     const { context } = this.props;
     const course = await context.actions.loadCourse(this.props.match.params.id);
-    if(course){
+    //Checks to make sure that courses was returned and that it's not a 500 status code
+    if(course && course !== 500){
       this.setState({
         id: course.id,
         title: course.title,
@@ -26,10 +27,15 @@ export default class UpdateCourse extends Component {
         user: course.user.firstName + ' ' + course.user.lastName,
         userId: course.userId,
       });
+      //Checks to see that the currently logged in user owns the course or not
       if(context.authenticatedUser.id !== this.state.userId) {
         this.props.history.push('/forbidden');
       }
+    } else if(course === 500){
+      // Redirects user to error page if there was a 500 status
+      this.props.history.push('/error');
     } else {
+      // If no course was found, the user is redirected to the 404 page
       this.props.history.push('/notfound');
     }
   }
@@ -40,32 +46,39 @@ export default class UpdateCourse extends Component {
 
   submit = () => {
     const { context } = this.props;
-    const userId = context.authenticatedUser.id;
+    //Sets the
+    //const userId = context.authenticatedUser.id;
+    // declares variables so save from writing this.state.* everywhere
     const { title, description, estimatedTime, materialsNeeded } = this.state;
-
+    // Declares and fills course variable object
     const course = { title, description, estimatedTime, materialsNeeded };
+    // Grabs credentials to authorize user in update request
     const credentials = JSON.parse(localStorage.getItem('user'));
     context.data.updateCourse(course, credentials.authData, this.state.id)
       .then(errors => {
+        //Checks for validation errors and sets them if they exist
         if(errors.length) {
-          console.log(errors);
           this.setState({ errors });
+        } else if(errors === 500){
+          // Redirects user to error page if 500 error is returned
+          this.props.history.push('/error');
         } else {
+          // If no errors or 500 error, the course will be updated and user will be redirected to home page
           this.props.history.push('/');
           console.log('Course successfully updated!');
         }
       })
       .catch(err => {
         console.log(err);
-        //this.props.history.push('/error');
+        this.props.history.push('/error');
       });
 
   }
-
+  //Handles updating the values in the input areas
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-
+    // Updates the state as the input values are changed
     this.setState(() => {
       return {
         [name]: value
