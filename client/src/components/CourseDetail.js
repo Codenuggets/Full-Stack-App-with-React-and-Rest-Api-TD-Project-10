@@ -16,7 +16,8 @@ export default class CourseDetail extends Component {
   async componentDidMount() {
     const { context } = this.props;
     const course = await context.actions.loadCourse(this.props.match.params.id);
-    console.log(course);
+
+    // Makes sure there is no 500 or 404 error
     if(course !== 500 && course !== 404){
       this.setState({
         id: course.id,

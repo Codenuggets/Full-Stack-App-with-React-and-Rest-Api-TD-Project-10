@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 export default class extends React.PureComponent {
-  state = {
-    location: "hi"
-  }
   render() {
     const { context } = this.props;
     const authenticatedUser = context.authenticatedUser;
+    //Sets up history object to set pathname for when user chooses to sign in and then return to their previous viewed page
     const history = createBrowserHistory();
     return (
       <div className="header">

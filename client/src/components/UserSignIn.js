@@ -10,6 +10,7 @@ export default class UserSignIn extends Component {
   }
 
   change = (event) => {
+    // handles changing the changed values in the input areas
     const name = event.target.name;
     const value = event.target.value;
 
@@ -22,6 +23,7 @@ export default class UserSignIn extends Component {
 
   submit = () => {
     const { context } = this.props;
+    // Grabs the from state set from either clicking the user sign in or being redirected from PrivateRoute. Defaults to home page if no value is passed
     const { from } = this.props.location.state || { from: { pathname: '/' } };
     const { username, password } = this.state;
     context.actions.signIn(username, password)
@@ -31,6 +33,7 @@ export default class UserSignIn extends Component {
             return { errors: ['Sign-in was unsuccessful'] };
           });
         } else {
+          // If no error is passed, the user is signed in and redirected to either their previous page or home page
           this.props.history.push(from);
           console.log(`SUCCESS! ${username} is now signed in!`);
         }
