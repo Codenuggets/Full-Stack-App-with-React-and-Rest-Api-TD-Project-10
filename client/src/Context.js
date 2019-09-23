@@ -6,6 +6,7 @@ const Context = React.createContext();
 
 export class Provider extends Component {
   state = {
+    // Checks for authenticateUser user in the cookies and sets value if it's there
     authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
   };
 
@@ -70,9 +71,9 @@ export const Consumer = Context.Consumer;
 export default function withContext(Component) {
   return function ContextComponent(props) {
     return (
-      <Context.Consumer>
+      <Consumer>
         {context => <Component {...props} context={context} /> }
-      </Context.Consumer>
+      </Consumer>
     );
   }
 }
