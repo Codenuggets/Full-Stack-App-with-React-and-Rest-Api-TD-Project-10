@@ -10,12 +10,14 @@ export default class CourseDetail extends Component {
     user: null,
     userId: null,
     course: null,
+    id: null,
   }
 
   async componentDidMount() {
     const { context } = this.props;
     const course = await context.actions.loadCourse(this.props.match.params.id);
-    if(course !== 500){
+    console.log(course);
+    if(course !== 500 && course !== 404){
       this.setState({
         id: course.id,
         title: course.title,

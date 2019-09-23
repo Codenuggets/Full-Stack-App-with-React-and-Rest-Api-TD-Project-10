@@ -140,7 +140,12 @@ router.get('/courses/:id', async (req, res) => {
     ],
     attributes: {exclude: ['createdAt', 'updatedAt']},
   });
+  if(course) {
     res.json(course);
+  } else {
+    res.status(404);
+    res.end();
+  }
 });
 
 // STATUS 201 | Creates a course, sets the Location header to the URI for the course and returns no content
@@ -206,7 +211,7 @@ router.put('/courses/:id', [
           estimatedTime: req.body.estimatedTime,
           materialsNeeded: req.body.materialsNeeded,
         });
-        res.status(500).end();
+        res.end();
       } else {
         res.status(403).json({ error: "User has to own course to update them"});
       }

@@ -41,7 +41,7 @@ export default class UpdateCourse extends Component {
   }
 
   cancel = () => {
-    this.props.history.push('/');
+    this.props.history.push(`/courses/${this.state.id}`);
   }
 
   submit = () => {
