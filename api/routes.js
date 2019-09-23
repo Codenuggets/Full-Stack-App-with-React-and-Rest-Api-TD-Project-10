@@ -138,6 +138,7 @@ router.get('/courses/:id', async (req, res) => {
         attributes: {exclude: ['createdAt', 'updatedAt', 'password']},
       },
     ],
+    attributes: {exclude: ['createdAt', 'updatedAt']},
   });
     res.json(course);
 });
